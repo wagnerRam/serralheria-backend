@@ -3,6 +3,18 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
+export default function initMiddleware(middleware: any) {
+  return (req: any, res: any) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result: any) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+}
+
 export async function GET(request: Request, context: any) {
   const id = context.params.id;
 
